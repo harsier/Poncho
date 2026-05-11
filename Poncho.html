@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sorpresa para mi Tulipán</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f7b961; 
+            min-height: 100vh;
+            min-height: 100dvh; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif; 
+            -webkit-font-smoothing: antialiased; 
+        }
+
+        /* --- SECCIÓN 1: EL SOBRE --- */
+        #envelope-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 50px;
+            transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.5s ease; 
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #envelope-section.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+            pointer-events: none; 
+        }
+
+        .container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+        }
+
+        .envelope-back {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #d63870; 
+            border-radius: 5px;
+            z-index: 1;
+        }
+
+        .envelope-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-top: 90px solid #ef538c; 
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            z-index: 4; 
+            transform-origin: top center; 
+            animation: openFlap 1s ease-out forwards;
+            -webkit-animation: openFlap 1s ease-out forwards;
+        }
+
+        .envelope-front {
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid #ef538c;
+            border-right: 150px solid #ef538c;
+            border-bottom: 110px solid #ea407d;
+            border-top: 90px solid transparent; 
+            z-index: 3;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .seal {
+            position: absolute;
+            bottom: 85px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #d63870;
+            font-size: 40px;
+            z-index: 5; 
+            animation: sealFade 0.3s linear forwards;
+            -webkit-animation: sealFade 0.3s linear forwards;
+            animation-delay: 0.1s; 
+        }
+
+        .letter {
+            position: absolute;
+            bottom: 10px;
+            left: 5%;
+            width: 90%;
+            height: 180px;
+            background-color: white;
+            border-radius: 8px;
+            z-index: 2; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transform: translateY(0);
+            animation: slideUp 1.5s ease-out forwards;
+            -webkit-animation: slideUp 1.5s ease-out forwards;
+            animation-delay: 1.5s; 
+        }
+
+        .text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #333;
+            opacity: 0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2); 
+            animation: fadeIn 1s ease-in forwards;
+            -webkit-animation: fadeIn 1s ease-in forwards;
+            animation-delay: 2.5s;
+        }
+
+        .hearts-container {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2; 
+            pointer-events: none;
+        }
+
+        .heart { position: absolute; opacity: 0; bottom: 0; }
+        .h1 { left: 10%; color: #ff8fa3; font-size: 20px; animation: floatUp 3s ease-in forwards; animation-delay: 3s; }
+        .h2 { left: 80%; color: #d63870; font-size: 30px; animation: floatUp 3.5s ease-in forwards; animation-delay: 3.2s; }
+        .h3 { left: 30%; color: #ff8fa3; font-size: 15px; animation: floatUp 4s ease-in forwards; animation-delay: 3.5s; }
+        .h4 { left: 60%; color: #ff8fa3; font-size: 25px; animation: floatUp 3.2s ease-in forwards; animation-delay: 3.7s; }
+        .h5 { left: 45%; color: #d63870; font-size: 35px; animation: floatUp 4.5s ease-in forwards; animation-delay: 4s; }
+        .h6 { left: 20%; color: #d63870; font-size: 18px; animation: floatUp 3s ease-in forwards; animation-delay: 4.5s; }
+
+        /* --- SECCIÓN 2: LA SORPRESA FINAL --- */
+        #surprise-section {
+            display: flex; 
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            padding: 40px 20px; 
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            width: 85%; 
+            max-width: 500px; 
+            text-align: center;
+            
+            transition: opacity 0.6s ease, visibility 0.6s ease, transform 0.6s ease;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8);
+            box-sizing: border-box; 
+            
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8); 
+        }
+
+        #surprise-section.is-visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .media-wrapper {
+            position: relative;
+            margin-bottom: 25px;
+            display: inline-block; 
+            width: 100%;
+        }
+
+        .gif-container {
+            width: 100%; 
+            max-width: 300px; 
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: block;
+        }
+
+        .gif-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .romantic-phrase {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem; 
+            color: #d63870;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        /* --- KEYFRAMES --- */
+        @keyframes openFlap { 0% { transform: rotateX(0deg); z-index: 4; } 100% { transform: rotateX(-180deg); z-index: 1; } }
+        @-webkit-keyframes openFlap { 0% { -webkit-transform: rotateX(0deg); z-index: 4; } 100% { -webkit-transform: rotateX(-180deg); z-index: 1; } }
+        
+        @keyframes sealFade { 0% { opacity: 1; } 100% { opacity: 0; display: none; } }
+        @-webkit-keyframes sealFade { 0% { opacity: 1; } 100% { opacity: 0; display: none; } }
+        
+        @keyframes slideUp { 0% { transform: translateY(0); } 100% { transform: translateY(-110px); } }
+        @-webkit-keyframes slideUp { 0% { -webkit-transform: translateY(0); } 100% { -webkit-transform: translateY(-110px); } }
+        
+        @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+        @-webkit-keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+        
+        @keyframes floatUp { 0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(-250px) scale(1.2) rotate(20deg); opacity: 0; } }
+        @-webkit-keyframes floatUp { 0% { -webkit-transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; } 20% { opacity: 1; } 100% { -webkit-transform: translateY(-250px) scale(1.2) rotate(20deg); opacity: 0; } }
+
+    </style>
+</head>
+<body>
+
+    <div id="envelope-section">
+        <div class="container">
+            <div class="envelope-back"></div>
+            <div class="envelope-front"></div>
+            <div class="envelope-top"></div>
+            <div class="seal">❤</div>
+
+            <div class="letter">
+                <div class="text">Para Sam 🤍</div>
+                
+                <div class="hearts-container">
+                    <div class="heart h1">❤</div>
+                    <div class="heart h2">❤</div>
+                    <div class="heart h3">❤</div>
+                    <div class="heart h4">❤</div>
+                    <div class="heart h5">❤</div>
+                    <div class="heart h6">❤</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="surprise-section">
+        <div class="media-wrapper">
+            <div class="gif-container">
+                <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaDV0OWhleDBwcGk0cjY2czBra2U0ODV6eWpmdjNibmF4bTJsZm12ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/w41OHDaJgCthHrxBDL/giphy.gif" alt="Gif sorpresa">
+            </div>
+        </div>
+
+        <p class="romantic-phrase">Eres la casualidad más bonita que llegó a mi vida. Toda una vida juntos.</p>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const envelopeSection = document.getElementById('envelope-section');
+            const surpriseSection = document.getElementById('surprise-section');
+
+            function mostrarSorpresa() {
+                // Ocultamos el sobre suavemente
+                envelopeSection.classList.add('is-hidden');
+
+                // Damos tiempo a la transición de salida antes de mostrar la sorpresa
+                setTimeout(() => {
+                    surpriseSection.classList.add('is-visible');
+                }, 500); 
+            }
+
+           
+            setTimeout(mostrarSorpresa, 4500);
+        });
+    </script>
+
+</body>
+</html>
